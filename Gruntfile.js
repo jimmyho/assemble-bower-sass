@@ -15,7 +15,7 @@
 // use this if you want to match all subfolders:
 // '<%= config.src %>/templates/pages/**/*.hbs'
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt);
@@ -32,6 +32,10 @@ module.exports = function(grunt) {
       assemble: {
         files: ['<%= config.src %>/{content,data,templates}/{,*/}*.{md,hbs,yml}'],
         tasks: ['assemble']
+      },
+      sass: {
+        files: ['<%= config.src %>/templates/assets/css/**/*.{scss,sass}'],
+        tasks: ['sass']
       },
       livereload: {
         options: {
@@ -71,7 +75,7 @@ module.exports = function(grunt) {
           layout: '<%= config.src %>/templates/layouts/default.hbs',
           data: '<%= config.src %>/data/*.{json,yml}',
           partials: '<%= config.src %>/templates/partials/*.hbs',
-          plugins: ['assemble-contrib-permalinks','assemble-contrib-sitemap'],
+          plugins: ['assemble-contrib-permalinks', 'assemble-contrib-sitemap'],
         },
         files: {
           '<%= config.dist %>/': ['<%= config.src %>/templates/pages/*.hbs']
@@ -108,9 +112,15 @@ module.exports = function(grunt) {
       dev: {
         files: {'dist/assets/css/main.css': 'src/templates/assets/css/main.scss'}
       },
+      temp: {
+        files: {'.temp/assets/css/main.css': 'src/templates/assets/css/main.scss'}
+      }
     },
 
     wiredep: {
+      scss: {
+        src: ['src/templates/assets/css/main.scss']
+      },
       dev: {
         ignorePath: /\.\.\/\.\.\//,
         src: ['src/templates/layouts/default.hbs'],
@@ -118,13 +128,58 @@ module.exports = function(grunt) {
       dist: {
         src: ['src/templates/layouts/default.hbs'],
       },
-      scss: {
-        src: ['src/templates/assets/css/main.scss']
+
+    },
+
+    useminPrepare: {
+      html: '<%= config.src %>/templates/layouts/default.hbs',
+      options: {
+        dest: '<%= config.dist %>',
+        staging: '.temp',
+        flow: {
+          html: {
+            steps: {
+              js: ['concat', 'uglifyjs'],
+              css: ['cssmin']
+            },
+            post: {}
+          }
+        }
       }
     },
+    usemin: {
+      html: ['<%= config.dist %>/**/*.html'],
+      css: ['<%= config.dist %>/assets/**/*.css'],
+      options: {
+        assetsDirs: ['<%= config.dist %>']
+      }
+    },
+    cssmin: {
+      options: {
+        noRebase: true
+      }
+    },
+    htmlmin: {
+      dist: {
+        options: {
+          collapseWhitespace: true,
+          collapseBooleanAttributes: true,
+          removeCommentsFromCDATA: true,
+          removeOptionalTags: true
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= config.dist %>',
+          src: ['*.html'],
+          dest: '<%= config.dist %>'
+        }]
+      }
+    },
+
+
     // Before generating any new files,
     // remove any previously-created files.
-    clean: ['<%= config.dist %>/**/*.{html,xml}']
+    clean: ['<%= config.dist %>/**/*']
 
   });
 
@@ -144,6 +199,29 @@ module.exports = function(grunt) {
     'assemble'
   ]);
 
+  grunt.registerTask('dev', [
+    'clean',
+    'wiredep:dev',
+    'wiredep:scss',
+    'sass:dev',
+    'newer:copy:bower',
+    'assemble'
+  ]);
+
+  grunt.registerTask('dist', [
+    'clean',
+    'wiredep:dist',
+    'wiredep:scss',
+    'sass:temp',
+    'useminPrepare',
+    'concat',
+    //'copy:img',
+    'assemble',
+    'cssmin',
+    'uglify',
+    'usemin',
+    'htmlmin',
+  ]);
   grunt.registerTask('default', [
     'build'
   ]);

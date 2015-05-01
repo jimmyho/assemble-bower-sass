@@ -20,3 +20,4 @@ dist
 bower_components
 
 .idea
+.temp
