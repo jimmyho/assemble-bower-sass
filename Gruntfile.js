@@ -37,6 +37,18 @@ module.exports = function (grunt) {
         files: ['<%= config.src %>/templates/assets/css/**/*.{scss,sass}'],
         tasks: ['sass']
       },
+      bower: {
+        files: ['bower.json'],
+        tasks: ['wiredep:dev', 'copy_assets:dev']
+      },
+      js: {
+        files: ['<%= config.src %>/templates/assets/js/**/*.js'],
+        tasks: ['newer:copy:js']
+      },
+      img: {
+        files: ['<%= config.src %>/templates/assets/img/**/*.{png,jpg,jpeg,gif,webp,svg}'],
+        tasks: ['newer:copy:img']
+      },
       livereload: {
         options: {
           livereload: '<%= connect.options.livereload %>'
@@ -197,11 +209,18 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('assemble');
 
-  grunt.registerTask('server', [
-    'build',
+  grunt.registerTask('start_server', [
     'connect:livereload',
     'watch'
   ]);
+
+  grunt.registerTask('server', function (target) {
+    if (target === 'dist') {
+      return grunt.task.run(['dist', 'start_server']);
+    }
+
+    grunt.task.run(['dev', 'start_server']);
+  });
 
   grunt.registerTask('build', [
     'clean',
