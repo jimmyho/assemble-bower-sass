@@ -93,7 +93,17 @@ module.exports = function(grunt) {
         dest: '<%= config.dist %>/assets/css/'
       }
     },
+    sass: {
+      dev: {
+        files: {'dist/assets/css/main.css': 'src/templates/assets/css/main.scss'}
+      },
+    },
 
+    wiredep: {
+      scss: {
+        src: ['src/templates/assets/css/main.scss']
+      }
+    },
     // Before generating any new files,
     // remove any previously-created files.
     clean: ['<%= config.dist %>/**/*.{html,xml}']
@@ -110,7 +120,9 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean',
-    'copy',
+    //'copy',
+    'sass',
+    'wiredep',
     'assemble'
   ]);
 

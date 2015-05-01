@@ -1,0 +1,11 @@
+// override Bootstrap variables here
+
+
+// bower:scss
+@import "../../../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+// endbower
+
+// Application Styles
+body {
+  background: black;
+}
