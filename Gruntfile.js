@@ -80,26 +80,44 @@ module.exports = function(grunt) {
     },
 
     copy: {
-      bootstrap: {
+      //bootstrap: {
+      //  expand: true,
+      //  cwd: 'bower_components/bootstrap/dist/',
+      //  src: '**',
+      //  dest: '<%= config.dist %>/assets/'
+      //},
+      //theme: {
+      //  expand: true,
+      //  cwd: 'src/assets/',
+      //  src: '**',
+      //  dest: '<%= config.dist %>/assets/css/'
+      //}
+      bower: {
         expand: true,
-        cwd: 'bower_components/bootstrap/dist/',
+        cwd: '<%= config.src %>/bower_components/',
         src: '**',
-        dest: '<%= config.dist %>/assets/'
+        dest: '<%= config.dist %>/bower_components/'
       },
-      theme: {
-        expand: true,
-        cwd: 'src/assets/',
-        src: '**',
-        dest: '<%= config.dist %>/assets/css/'
-      }
     },
     sass: {
+      options: {
+        includePaths: [
+          'src/bower_components/flat-ui-sass/vendor/assets/stylesheets'
+        ]
+      },
       dev: {
         files: {'dist/assets/css/main.css': 'src/templates/assets/css/main.scss'}
       },
     },
 
     wiredep: {
+      dev: {
+        ignorePath: /\.\.\/\.\.\//,
+        src: ['src/templates/layouts/default.hbs'],
+      },
+      dist: {
+        src: ['src/templates/layouts/default.hbs'],
+      },
       scss: {
         src: ['src/templates/assets/css/main.scss']
       }
@@ -120,9 +138,9 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean',
-    //'copy',
+    'newer:copy:bower',
     'sass',
-    'wiredep',
+    'wiredep:dev',
     'assemble'
   ]);
 

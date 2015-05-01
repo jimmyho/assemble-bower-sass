@@ -11,7 +11,6 @@
     <!-- endbuild -->
 
     <!-- Custom styles for this template -->
-    <link href="{{assets}}/css/theme.css" rel="stylesheet">
     <link href="{{assets}}/css/main.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -31,9 +30,21 @@
 
     </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="{{assets}}/js/bootstrap.min.js"></script>
+    <!--&lt;!&ndash; jQuery (necessary for Bootstrap's JavaScript plugins) &ndash;&gt;-->
+    <!--<script src="https://code.jquery.com/jquery.js"></script>-->
+    <!--&lt;!&ndash; Include all compiled plugins (below), or include individual files as needed &ndash;&gt;-->
+    <!--<script src="{{assets}}/js/bootstrap.min.js"></script>-->
+
+    <!-- build:js assets/js/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.js"></script>
+    <!-- endbower -->
+    <script src="../../bower_components/flat-ui-sass/vendor/assets/javascripts/flat-ui/flatui-checkbox.js"></script>
+    <script src="../../bower_components/flat-ui-sass/vendor/assets/javascripts/flat-ui/flatui-radio.js"></script>
+
+    <!-- endbuild -->
+
+
   </body>
 </html>
