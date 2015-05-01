@@ -102,6 +102,18 @@ module.exports = function (grunt) {
         src: '**',
         dest: '<%= config.dist %>/bower_components/'
       },
+      js: {
+        expand: true,
+        cwd: '<%= config.src %>/templates/',
+        src: '**/*.js',
+        dest: '<%= config.dist %>'
+      },
+      img: {
+        expand: true,
+        cwd: '<%= config.src %>/templates/',
+        src: '**/*.{png,jpg,jpeg,gif,webp,svg}',
+        dest: '<%= config.dist %>'
+      }
     },
     sass: {
       options: {
@@ -199,12 +211,19 @@ module.exports = function (grunt) {
     'assemble'
   ]);
 
+  grunt.registerTask('copy_assets:dev', [
+    'newer:copy:js', 'newer:copy:img', 'newer:copy:bower'
+  ])
+  grunt.registerTask('copy_assets:dist', [
+    'newer:copy:img'
+  ])
+
   grunt.registerTask('dev', [
     'clean',
     'wiredep:dev',
     'wiredep:scss',
     'sass:dev',
-    'newer:copy:bower',
+    'copy_assets:dev',
     'assemble'
   ]);
 
@@ -215,7 +234,7 @@ module.exports = function (grunt) {
     'sass:temp',
     'useminPrepare',
     'concat',
-    //'copy:img',
+    'copy_assets:dist',
     'assemble',
     'cssmin',
     'uglify',
