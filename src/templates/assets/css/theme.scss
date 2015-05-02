@@ -9,7 +9,6 @@ body {
   height: 100%;
 }
 
-
 /* Background images are set within the HTML using inline CSS, not here */
 
 .carousel, .item, .active {
@@ -71,4 +70,27 @@ footer {
   background: white;
 }
 
+.navbar-default {
+  //Top of Page
+  &.affix-top {
+    background: transparent;
+    a {
+      color: white;
+    }
+    & .nav > li {
+      & > a {
+        color: rgba(255, 255, 255, .7);
+      }
+      & > a:hover, & > a:focus:hover, & > a:focus {
+        //color: $br;
+        color: $link-hover-color;
+      }
+    }
+  }
 
+  //Scolled down
+  &.affix {
+    background: white;
+  }
+
+}
