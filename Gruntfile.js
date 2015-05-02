@@ -45,9 +45,9 @@ module.exports = function (grunt) {
         files: ['<%= config.src %>/templates/assets/js/**/*.js'],
         tasks: ['newer:copy:js']
       },
-      img: {
-        files: ['<%= config.src %>/templates/assets/img/**/*.{png,jpg,jpeg,gif,webp,svg}'],
-        tasks: ['newer:copy:img']
+      images: {
+        files: ['<%= config.src %>/templates/assets/images/**/*.{png,jpg,jpeg,gif,webp,svg}'],
+        tasks: ['newer:copy:assets']
       },
       livereload: {
         options: {
@@ -109,11 +109,27 @@ module.exports = function (grunt) {
         src: '**/*.js',
         dest: '<%= config.dist %>'
       },
-      img: {
-        expand: true,
-        cwd: '<%= config.src %>/templates/',
-        src: '**/*.{png,jpg,jpeg,gif,webp,svg}',
-        dest: '<%= config.dist %>'
+      assets: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= config.src %>/templates/',
+            src: '**/*.{png,jpg,jpeg,gif,webp,svg}',
+            dest: '<%= config.dist %>'
+          },
+          {
+            expand: true,
+            cwd: 'src/bower_components/flat-ui-sass/vendor/assets/images',
+            src: '**/*.{png,jpg,jpeg,gif,webp,svg}',
+            dest: '<%= config.dist %>/assets/images'
+          },
+          {
+            expand: true,
+            cwd: 'src/bower_components/flat-ui-sass/vendor/assets/fonts',
+            src: '**/*.{eot,ttf,woff,svg}',
+            dest: '<%= config.dist %>/assets/fonts'
+          }
+        ]
       }
     },
     sass: {
@@ -220,10 +236,10 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('copy_assets:dev', [
-    'newer:copy:js', 'newer:copy:img', 'newer:copy:bower'
+    'newer:copy:js', 'newer:copy:assets', 'newer:copy:bower'
   ])
   grunt.registerTask('copy_assets:dist', [
-    'newer:copy:img'
+    'newer:copy:assets'
   ])
 
   grunt.registerTask('dev', [

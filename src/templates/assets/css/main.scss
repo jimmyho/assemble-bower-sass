@@ -12,6 +12,9 @@
 
 
 // override Bootstrap variables here
+$icon-font-path: '../fonts/flat-ui/';
+
+
 
 @import "flat-ui/variables";
 // bower:scss
@@ -21,4 +24,4 @@
 
 @import "theme";
 
-// Application Styles
+// Application Styles here
